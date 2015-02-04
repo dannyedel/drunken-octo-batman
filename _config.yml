@@ -1,0 +1,16 @@
+# Configuration file for jekyll
+
+# exclude version-control files from output dir
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - vendor
+
+# GitHub style
+markdown: kramdown
+kramdown:
+  # GFM
+  input: GFM
+  # but without hard-breaks
+  hard_wrap: false
