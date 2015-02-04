@@ -1,6 +1,8 @@
-<a href="{{p.url}}"
-	{% if p.url == page.url %}
-		class="current"
-	{% endif %}
->{{p.title}}</a>
-
+<div class="navlink">
+	<a href="{{p.url}}"
+		{% if p.url == page.url %}
+			class="current"
+		{% endif %}
+	>{{p.title}}</a>
+	<time datetime="{{p.date|date_to_xmlschema}}">{{p.date|date_to_string}}</time>
+</div>
