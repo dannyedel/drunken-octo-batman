@@ -150,12 +150,12 @@ FIXME: report issue to debian bugtracker
 
 ---
 
-## Bluetooth
+## Bluetooth (BCM43142, 04ca:2009)
 
 lsusb:
 
 ```
-FIXME lsusb
+Bus 001 Device 004: ID 04ca:2009 Lite-On Technology Corp.
 ```
 
 The device contains a BCM43142 hybrid WLAN/Bluetooth chipset, and while
