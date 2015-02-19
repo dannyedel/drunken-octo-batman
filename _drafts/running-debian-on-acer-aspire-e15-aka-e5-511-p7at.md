@@ -136,7 +136,8 @@ With Jesse Sung's [hex2hcd] utility, I compiled it to the format
 and filename that btusb expected:
 `./hex2hcd ../bcm43142a0_001.001.011.0197.0211.hex BCM43142A0-04ca-2009.hcd`
 
-Copying that file to `/lib/firmware/brcm/` resulted in the bluetooth
+Copying that file to `/lib/firmware/brcm/`, followed by a fresh
+`rmmod btusb` and `insmod btusb.ko` resulted in the bluetooth
 *actually working* - I was able to use my phone as a bluetooth-mouse
 for the laptop, while browsing the internet (to verify Wi-Fi working
 simultaneously)
