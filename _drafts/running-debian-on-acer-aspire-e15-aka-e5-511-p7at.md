@@ -22,12 +22,14 @@ If you want bluetooth, get a coffee (and read the long version).
 
 ---
 
-## Graphics card (i915, Bay Trail, ValleyView)
+## Graphics card (i915, Bay Trail, ValleyView, 8086:0f31 - 1025:0905)
 
-lspci:
+lspci -nnk:
 
 ```
-FIXME lspci graphics card
+00:02.0 VGA compatible controller [0300]: Intel Corporation Atom Processor Z36xxx/Z37xxx Series Graphics & Display [8086:0f31] (rev 0e)
+	Subsystem: Acer Incorporated [ALI] Device [1025:0905]
+	Kernel driver in use: i915
 ```
 
 Symptom: When connecting an external monitor (via HDMI or VGA)
