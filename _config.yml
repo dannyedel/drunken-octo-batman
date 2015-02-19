@@ -8,6 +8,9 @@ exclude:
   - vendor
   - CNAME
 
+gems:
+  - jekyll-sitemap
+
 defaults:
   -
     scope:
