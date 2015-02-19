@@ -77,12 +77,14 @@ Look at [debian bug 778604][deb778604] for status on that.
 
 ---
 
-## Wireless LAN
+## Wireless LAN (Broadcom BCM43142, 14e4:4365 - 11ad:6645)
 
-lspci:
+lspci -nnk:
 
 ```
-FIXME lspci
+02:00.0 Network controller [0280]: Broadcom Corporation BCM43142 802.11b/g/n [14e4:4365] (rev 01)
+	Subsystem: Lite-On Communications Inc Device [11ad:6645]
+	Kernel driver in use: wl
 ```
 
 The Acer comes with a Broadcom BCM43142 combined WLAN+Bluetooth
