@@ -191,11 +191,11 @@ Here's an example:
   `bluetooth hci0: Direct firmware load for brcm/BCM43142A0-04ca-2009.hcd failed with error -2`
 
 ### Patching the kernel
-I added a line to the btusb.c source to inform the driver
+There needs to be an entry in the btusb.c source to inform the driver
 that `04ca:2009` is one of these patchram devices.
-See the [btusb-patch] for the exact format.
+See the [commit 8f0c304][git8f0c304] for the exact format.
 
-After that, rebuild `btusb.ko` (make modules) and insmod it.
+After patching, rebuild `btusb.ko` (make modules) and insmod it.
 Your syslog should tell you that it tried to load the modules.
 
 ### Obtaining the binary firmware from the windows drivers
@@ -232,7 +232,7 @@ from the internet
 
 FIXME: Check at which kernel version the PATCHRAM support was mainlined
 
-[btusb-patch]: /assets/downloads/bcm43142a0.patch
+[git8f0c304]: http://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/?id=8f0c304c693c5a9759ed6ae50d07d4590dad5ae7
 [hex2hcd]: https://github.com/jessesung/hex2hcd
 [BCM43142-thread]: http://askubuntu.com/questions/533043/bluetooth-not-working-on-ubuntu-14-04-with-dell-inspiron-15-3521
 [bcm43142-on-jessie]: http://dhanar10.blogspot.de/2014/05/bcm43142-bluetooth-getting-it-to-work.html
