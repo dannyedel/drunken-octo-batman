@@ -207,9 +207,11 @@ following things.
 It will attempt to send firmware to devices marked as `BTUSB_BCM_PATCHRAM`.
 You can check if your kernel already contains the relevant sections with
 `grep define.*PATCHRAM drivers/bluetooth/btusb.c` from your linux source tree
-* Your kernel has to know that the device `04ca:2009` is one of these "Patchram"
-devices. Check with
-`grep -i 04ca.*2009 drivers/bluetooth/btusb.c`
+* Your kernel has to know that your specific device
+(in my case `04ca:2009`)
+is one of these "Patchram" devices. Check with
+`grep -A1 -i 0x04ca drivers/bluetooth/btusb.c`
+if there is anything that sounds like "`0x04ca` has something to do with PATCHRAM"
 if there's any entry at all in your kernel.
 * You need the actual binary firmware to send to the device.
 Check `dmesg | grep -i blue.*firm`
@@ -220,7 +222,8 @@ Here's an example:
 ### Patching the kernel
 There needs to be an entry in the btusb.c source to inform the driver
 that `04ca:2009` is one of these patchram devices.
-See the [commit 8f0c304][git8f0c304] for the exact format.
+Upstream [commit 8f0c304][git8f0c304] specified that for all `04ca:xxxx`
+devices.
 
 After patching, rebuild `btusb.ko` (make modules) and insmod it.
 Your syslog should tell you that it tried to load the modules.
