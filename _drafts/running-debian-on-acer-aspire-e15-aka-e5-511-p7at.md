@@ -45,13 +45,11 @@ broadcom-sta-dkms (at least version `6.30.223.248-3`) does not build
 correctly on 3.18+ kernels (Which I was using because of the `i915`
 issue)
 
-### Work left to do:
-
-FIXME: Find or write patch to help the module compile on 3.18+
-
-FIXME: report this issue to debian bugtracker
+This issue is being tracked in debian as [debian bug 773713][deb773713],
+there are proposed patches in the BTS.
 
 [broadcom-sta-dkms]: https://packages.debian.org/jessie/broadcom-sta-dkms
+[deb773713]: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=773713
 
 ## Wakeup from hibernation does not work
 
