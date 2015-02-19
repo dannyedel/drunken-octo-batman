@@ -1,0 +1,23 @@
+commit af91c6c0a0e056f5b9acd1fec972748de8bfbb16
+Author: Danny Edel <mail@danny-edel.de>
+Date:   Thu Feb 19 14:55:13 2015 +0100
+
+    Add support for 04ca:2009 (BCM43142A0)
+    
+    This patch is similar to the ones linked at
+    http://dhanar10.blogspot.de/2014/05/bcm43142-bluetooth-getting-it-to-work.html
+
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index edfc17b..c27a769 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -107,6 +107,9 @@ static const struct usb_device_id btusb_table[] = {
+ 	{ USB_DEVICE(0x0b05, 0x17cb) },
+ 	{ USB_DEVICE(0x413c, 0x8197) },
+ 
++	/* Broadcom BCM43142A0 */
++	{ USB_DEVICE(0x04ca, 0x2009), .driver_info = BTUSB_BCM_PATCHRAM },
++
+ 	/* Foxconn - Hon Hai */
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(0x0489, 0xff, 0x01, 0x01) },
+ 

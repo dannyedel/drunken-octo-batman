@@ -1,0 +1,14 @@
+#!/bin/bash
+
+PREPOST="$1"
+
+if [ "$2" = "hibernate" ] ; then
+	if [ "$PREPOST" = "post" ]; then
+		logger "Re-Inserting i2c platform"
+		modprobe -v i2c-designware-platform
+	else
+		logger "Removing i2c platform"
+		rmmod i2c-designware-platform
+	fi
+fi
+
