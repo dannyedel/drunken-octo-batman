@@ -1,0 +1,4 @@
+img {
+	/* prevent images from running over the edge */
+	max-width: 100%;
+}
