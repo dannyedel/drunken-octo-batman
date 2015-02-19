@@ -149,5 +149,5 @@ from the internet
 
 [btusb-patch]: /assets/downloads/bcm43142a0.patch
 [hex2hcd]: https://github.com/jessesung/hex2hcd
-[BCM34142-thread]: http://askubuntu.com/questions/533043/bluetooth-not-working-on-ubuntu-14-04-with-dell-inspiron-15-3521
+[BCM43142-thread]: http://askubuntu.com/questions/533043/bluetooth-not-working-on-ubuntu-14-04-with-dell-inspiron-15-3521
 [bcm43142-on-jessie]: http://dhanar10.blogspot.de/2014/05/bcm43142-bluetooth-getting-it-to-work.html
