@@ -1,68 +1,134 @@
 ---
-title: "Running Debian GNU/Linux on an Acer Aspire E15 (aka E5-511-P7AT)"
+title: "Running Debian Jessie on an Acer Aspire E15 (aka E5-511-P7AT)"
 ---
 
-This page describes the issues I faced while trying to get a debian
-installation running on the Acer `Aspire E15`, also known as
-`E5-511-P7AT`. After applying some workarounds I was able to run
-*everything*.
+The good news first: The Laptop *can* work with debian jessie, but not (yet)
+out of the box. While you can use most of the device straight away, you will
+need to do some tweaking for the graphics card, wireless network, and
+bluetooth. This post explains how I got it to work.
 
-Note that debian *wheezy* did not work very well, the in-kernel driver
-for the integrated graphics card is simply too old.
+* Table of contents
+{:toc}
 
-Known issues and workarounds:
+## tl,dr: Summary
 
-## BUG: X freezes when connecting an external graphics card
+* Wait how [Debian bug #778604][deb778604] plays out
+before you connect an external monitor, or upgrade your kernel to v3.19+.
+* If you *do* upgrade your kernel to v3.19+, be prepared to patch the
+broadcom-sta (wireless lan) package with the patches from
+[debian bug #773713][deb773713]
+* Bluetooth requires a binary blob from the windows driver and kernel-patching.
+If you want bluetooth, get a coffee (and read the long version).
+
+---
+
+## Graphics card (i915, Bay Trail, ValleyView)
+
+lspci:
+
+```
+FIXME lspci graphics card
+```
+
+Symptom: When connecting an external monitor (via HDMI or VGA)
+the X server freezes.
 
 This is a bug in the i915 driver -- connecting an external screen
-(for example, while on the gdm login manager)
-results in a lockup, duplicating the (previously internal) contents.
+results in a lockup, duplicating the (previously internal) contents
+on the external screen and ignoring mouse and keyboard input:
 
 ![screen locking up example](/assets/images/acer-screen-lockup.jpg)
 
+You can still CTRL+ALT+F1, login as root and issue `service gdm restart`
+(with the HDMI cable disconnected), but it may take a bit until it
+actually restarts.
+
 ### Known workaround:
+This issue is fixed in the newest kernels.
+
 Install a linux kernel >= 3.19, for example from
-[debian snapshots' kernel images][snapshotlinux].
+[debian snapshots' kernel images][snapshotlinux] or build one from
+source:
+
+```
+git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
+cd linux
+cp /boot/config-$(uname -r) .config
+make olddefconfig
+fakeroot make deb-pkg
+```
 
 I have [reported this issue][deb778604] to the debian bugtracker,
 hoping to backport the driver to jessie.
 
+For reference: According to my testing, this issue was fixed in
+[commit 83b8459][git83b8459]
+
 ### Work left to do:
 
-See if it's possible to backport the i915 driver to jessie's kernel.
+Figure out if it's possible to backport the i915 driver to jessie's kernel.
 Look at [debian bug 778604][deb778604] for status on that.
 
 [snapshotlinux]: http://snapshot.debian.org/package/linux/
 [deb778604]: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=778604
+[git83b8459]: http://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/?id=83b8459756659ce55446e3eb97d64b966c60bfb9
 
-## Wireless LAN driver
+---
 
+## Wireless LAN
+
+lspci:
+
+```
+FIXME lspci
+```
+
+The Acer comes with a Broadcom BCM43142 combined WLAN+Bluetooth
+chipset. Note that it is *not* (yet?) supported by the open-source
+drivers and needs the broadcom binary driver (`wl`) to work.
 Install the [broadcom-sta-dkms] package from `non-free` to get the `wl`
 kernel module.
 
-### Known issue:
-broadcom-sta-dkms (at least version `6.30.223.248-3`) does not build
+*Little problem:* broadcom-sta-dkms (at least version `6.30.223.248-3`) does not build
 correctly on 3.18+ kernels (Which I was using because of the `i915`
-issue)
+issue above).
 
-This issue is being tracked in debian as [debian bug 773713][deb773713],
-there are proposed patches in the BTS.
+This build issues with 3.18+ are being tracked in debian
+as [debian bug 773713][deb773713], there are proposed patches in the BTS.
+
+### Known workaround:
+
+FIXME apply the patches from BTS
+
+### Work left to do:
+
+Wait for [bug 773713][deb773713].
 
 [broadcom-sta-dkms]: https://packages.debian.org/jessie/broadcom-sta-dkms
 [deb773713]: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=773713
 
-## Wakeup from hibernation does not work
+---
 
-Going to hibernation works, also every `pm_test` step from the
-kernel documentation's [basic-pm-debugging] worked.
-The documentation suggested one of the
-loadable kernel modules is likely the problem.
+## Hibernation
+
+Out of the box, the laptop can suspend/resume just fine. However, if you
+hibernate it, it will freeze while waking up (screen is blank but the
+backlight is on, and the fans start spinning after a while -- I'm
+assuming some kind of endless loop resulting in the processor getting hot)
+
+Going through the steps from the kernel doc's [basic-pm-debugging] article,
+I found that all `pm_test` steps work just fine, as did the `init=/bin/bash`
+minimal environment, so the documentation suggested it must be one of the
+loadable modules.
 
 Using a [hibernate-tester] tool I wrote specifically to figure out which one,
 I found that having the `i2c-designware-platform` module loaded breaks wakeup
 from hibernation.
 
 ### Known workaround:
+
+Just `rmmod i2c-designware-platform` before hibernation and
+`modprobe i2c-designware-platform` after resume.
 
 If you're using `systemd`, you can drop a simple script ([example script]) into the
 `/lib/systemd/systemd-sleep/` directory to automatically un-load the module when
@@ -78,33 +144,50 @@ FIXME: report issue to debian bugtracker
 [hibernate-tester]: https://github.com/dannyedel/hibernate-tester
 [example script]: /assets/downloads/remove-faulty-module
 
-## Bluetooth driver
+---
 
-The device contains a BCM43142 hybrid WLAN/Bluetooth chipset, which doesn't work
-out-of-the-box.
+## Bluetooth
 
-An askubuntu.com [BCM43142-thread] suggested this is due to a binary firmware
-issue.
+lsusb:
+
+```
+FIXME lsusb
+```
+
+The device contains a BCM43142 hybrid WLAN/Bluetooth chipset, and while
+there is a debian package that can be installed for WLAN, I did not
+find any support for the bluetooth component (which, oddly enough,
+connects via USB and is listed as a LiteOn device).
+
+An askubuntu.com [thread about the BCM43142][BCM43142-thread] suggested
+this is due to a binary firmware issue. (Note that their usb-id is
+`0a5c:21d7`, which is different from the Aspire's)
+
 Further google'ing revealed that on debian jessie, the btusb module
 needs to be patched to actually load the modules. Refer to
-`dhanar10.blogspot.de`'s post about [bcm43142-on-jessie] for details
-and the generic idea (thanks for figuring this all out!).
+Dhanar Adi Dewandaru's post about
+[getting his BCM43142 to work on jessie][bcm43142-on-jessie]
+for the heavy lifting, but note that he also has a different
+usb-id (`105b:e065`).
 
-Since I was already using a custom kernel (see above about the intel
-i915 driver) I started to research and experiment...
+Big thanks to the original posters for figuring this
+all out! The following is just an adaptation for this specific laptop.
 
-Here's what I know:
+Reading through the patches linked at the above articles, I learned the
+following things.
 
 * Your kernel needs to be patched to send Broadcom firmware to devices.
-It will do this to devices marked as `BTUSB_BCM_PATCHRAM`.
-You can check if your kernel contains the relevant sections with
+It will attempt to send firmware to devices marked as `BTUSB_BCM_PATCHRAM`.
+You can check if your kernel already contains the relevant sections with
 `grep define.*PATCHRAM drivers/bluetooth/btusb.c` from your linux source tree
 * Your kernel has to know that the device `04ca:2009` is one of these "Patchram"
 devices. Check with
 `grep -i 04ca.*2009 drivers/bluetooth/btusb.c`
-* You need the actual binary firmware to send there. Check `dmesg | grep -i blue.*firm`
+if there's any entry at all in your kernel.
+* You need the actual binary firmware to send to the device.
+Check `dmesg | grep -i blue.*firm`
 for any bluetooth-firmware-loading messages.
-Mine said:
+Here's an example:
   `bluetooth hci0: Direct firmware load for brcm/BCM43142A0-04ca-2009.hcd failed with error -2`
 
 ### Patching the kernel
@@ -146,6 +229,8 @@ FIXME: Report this to debian bugtracker
 
 FIXME: Figure out if this binary firmware can be downloaded
 from the internet
+
+FIXME: Check at which kernel version the PATCHRAM support was mainlined
 
 [btusb-patch]: /assets/downloads/bcm43142a0.patch
 [hex2hcd]: https://github.com/jessesung/hex2hcd
