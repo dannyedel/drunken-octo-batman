@@ -55,8 +55,9 @@ FIXME: report this issue to debian bugtracker
 
 ## Wakeup from hibernation does not work
 
-Going to hibernation works, also every `pm_test` step from [basic-pm-debugging]
-(from the kernel documentation) worked. The documentation suggested one of the
+Going to hibernation works, also every `pm_test` step from the
+kernel documentation's [basic-pm-debugging] worked.
+The documentation suggested one of the
 loadable kernel modules is likely the problem.
 
 Using a [hibernate-tester] tool I wrote specifically to figure out which one,
