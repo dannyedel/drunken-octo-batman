@@ -100,7 +100,8 @@ correctly on 3.18+ kernels (Which I was using because of the `i915`
 issue above).
 
 This build issues with 3.18+ are being tracked in debian
-as [debian bug 773713][deb773713], there are proposed patches in the BTS.
+as [debian bug 773713][deb773713] and [debian bug 777280][deb777280],
+there are proposed patches in the BTS.
 
 ### Known workaround:
 
@@ -117,11 +118,12 @@ in the debian wiki.
 
 ### Work left to do:
 
-Wait for [bug 773713][deb773713].
+Wait for [bug 773713][deb773713] and [bug 777280][deb777280].
 
 [UsingQuilt]: https://wiki.debian.org/UsingQuilt
 [broadcom-sta-dkms]: https://packages.debian.org/jessie/broadcom-sta-dkms
 [deb773713]: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=773713
+[deb777280]: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=777280
 [patchscript]: /assets/downloads/patch-broadcom-sta-linux-3.18-and-build.sh
 ---
 
