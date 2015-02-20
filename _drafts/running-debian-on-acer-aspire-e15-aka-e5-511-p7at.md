@@ -191,27 +191,57 @@ all out! The following is just an adaptation for this specific laptop.
 Reading through the patches linked at the above articles, I learned the
 following things.
 
-* Your kernel needs to be patched to send Broadcom firmware to devices.
-It will attempt to send firmware to devices marked as `BTUSB_BCM_PATCHRAM`.
-You can check if your kernel already contains the relevant sections with
-`grep define.*PATCHRAM drivers/bluetooth/btusb.c` from your linux source tree
+Your kernel needs to be patched to *send Broadcom firmware to devices*.
+It will attempt to send firmware to *devices marked as `BTUSB_BCM_PATCHRAM`*.
+The firmware is a binary blob that you can *extract from the windows driver*,
+but you need to *convert it from hex to hcd format* to use it.
+
+* Check with `modprobe btusb ; dmesg | grep -i blue.*firm` if it attempted
+to send any firmware - if it did, just skip to grabbing the windows binary
+blob.
+
+* If it didnt, you'll need to inspect the kernel source if it has the necessary
+defines for PATCHRAM at all.
+
+  `grep define.*PATCHRAM drivers/bluetooth/btusb.c` from your linux source tree
+should show a line assigning some hex number to PATCHRAM devices. (If that's not in,
+you'll need a newer kernel or backport lots of thing,
+my research shows it's been added in [commit 10d4c67][gitPATCHRAM], which was
+included in v3.16.
+
 * Your kernel has to know that your specific device
 (in my case `04ca:2009`)
 is one of these "Patchram" devices. Check with
 `grep -A1 -i 0x04ca drivers/bluetooth/btusb.c`
 if there is anything that sounds like "`0x04ca` has something to do with PATCHRAM"
-if there's any entry at all in your kernel.
+if there's any entry at all in your kernel. Example:
+
+  ```
+        { USB_VENDOR_AND_INTERFACE_INFO(0x04ca, 0xff, 0x01, 0x01),
+          .driver_info = BTUSB_BCM_PATCHRAM },
+  ```
+
 * You need the actual binary firmware to send to the device.
-Check `dmesg | grep -i blue.*firm`
-for any bluetooth-firmware-loading messages.
-Here's an example:
+This is the part where you need to dissect the windows driver, and convert
+it to the filename and format where it is expected.
+
+  Check `dmesg | grep -i blue.*firm` to see the filename it tried to send.
+
+  Example:
   `bluetooth hci0: Direct firmware load for brcm/BCM43142A0-04ca-2009.hcd failed with error -2`
 
-### Patching the kernel
-There needs to be an entry in the btusb.c source to inform the driver
-that `04ca:2009` is one of these patchram devices.
-Upstream [commit 8f0c304][git8f0c304] specified that for all `04ca:xxxx`
-devices.
+### Telling the (patchram-aware) kernel about your device
+
+If your kernel is basically patchram-aware, but doesn't have your device in,
+there's two formats apparently:
+
+* Format 1: All devices with a specific USB vendor ID:
+
+  "All 04ca:XXXX devices are patchram: " see [commit 8f0c304][git8f0c304]
+
+* Format 2: One Vendor:Device combination:
+
+  "The device 13d3:3404 is patchram: " see [commit a86c02ea][gita86c02ea]
 
 After patching, rebuild `btusb.ko` (make modules) and insmod it.
 Your syslog should tell you that it tried to load the modules.
@@ -251,6 +281,8 @@ from the internet
 FIXME: Check at which kernel version the PATCHRAM support was mainlined
 
 [git8f0c304]: http://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/?id=8f0c304c693c5a9759ed6ae50d07d4590dad5ae7
+[gita86c02ea]: http://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/?id=a86c02ea38c53b695209b1181f9e2e18d73eb4e8
+[gitPATCHRAM]: http://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/?id=10d4c6736ea6e6ff293dd588551270bca00ca45d
 [hex2hcd]: https://github.com/jessesung/hex2hcd
 [BCM43142-thread]: http://askubuntu.com/questions/533043/bluetooth-not-working-on-ubuntu-14-04-with-dell-inspiron-15-3521
 [bcm43142-on-jessie]: http://dhanar10.blogspot.de/2014/05/bcm43142-bluetooth-getting-it-to-work.html
