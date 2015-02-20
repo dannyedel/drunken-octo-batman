@@ -19,7 +19,8 @@ broadcom-sta (wireless lan) package with the patches from
 [debian bug #773713][deb773713]
 * Bluetooth requires a binary blob from the windows driver and a kernel with
 commit [8f0c304][git8f0c304] which is post-3.19.
-Right now that means building from git.
+Right now that means building upstream from git or
+`git cherry-pick`ing the commit to an older kernel.
 
 ---
 
