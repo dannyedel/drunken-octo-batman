@@ -2,3 +2,8 @@ img {
 	/* prevent images from running over the edge */
 	max-width: 100%;
 }
+
+pre {
+	/* prevent code blocks from running over */
+	overflow: auto;
+}
