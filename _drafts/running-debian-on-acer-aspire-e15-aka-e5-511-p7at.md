@@ -250,7 +250,9 @@ Your syslog should tell you that it tried to load the modules.
 
 tl,dr:
 
-1. [hex2hcd] `$(find /mnt/cdrom -iname bcm43142a0_001.001.011.0197.0211.hex)
+1. Download and compile [hex2hcd]
+
+1. `hex2hcd $(find /mnt/cdrom -iname bcm43142a0_001.001.011.0197.0211.hex)
 BCM43142A0-04ca-2009.hcd`
 
 1. (as root) `mv *.hcd /lib/firmware/brcm/`
