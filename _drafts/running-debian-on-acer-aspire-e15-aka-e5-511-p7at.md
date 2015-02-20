@@ -17,11 +17,9 @@ before you connect an external monitor, or upgrade your kernel to v3.19+.
 * If you *do* upgrade your kernel to v3.19+, be prepared to patch the
 broadcom-sta (wireless lan) package with the patches from
 [debian bug #773713][deb773713]
-* Bluetooth requires a binary blob from the windows driver and kernel-patching.
-If you want bluetooth, get a coffee (and read the long version).
-* At the bottom of this article is a direct link to the kernel
-version I'm running. You will still need to execute the steps from "wireless"
-and from "bluetooth".
+* Bluetooth requires a binary blob from the windows driver and a kernel with
+commit [8f0c304][git8f0c304] which is post-3.19.
+Right now that means building from git.
 
 ---
 
@@ -256,22 +254,3 @@ FIXME: Check at which kernel version the PATCHRAM support was mainlined
 [hex2hcd]: https://github.com/jessesung/hex2hcd
 [BCM43142-thread]: http://askubuntu.com/questions/533043/bluetooth-not-working-on-ubuntu-14-04-with-dell-inspiron-15-3521
 [bcm43142-on-jessie]: http://dhanar10.blogspot.de/2014/05/bcm43142-bluetooth-getting-it-to-work.html
-
----
-
-## Kernel containing both i915 and BCM43142 support
-
-I was able to `git cherry-pick` the kernel-part of the BCM43132 onto
-the revision that made the i915 card work for me.
-
-Build it with
-
-```
-git clone --branch=patchram--cherrypick-8f0c304--on-83b8459 git://github.com/dannyedel/linux
-cd linux
-cp /boot/config-$(uname -r) .config
-make olddefconfig
-fakeroot make deb-pkg
-```
-
-And install it with (as root) `dpkg -i ../linux-{image,headers,firmware-image}-3.18.0-rc2+_3.18.0-rc2+-7_amd64.deb`
