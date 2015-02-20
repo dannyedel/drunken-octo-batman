@@ -301,8 +301,6 @@ FIXME: Report this to debian bugtracker
 FIXME: Figure out if this binary firmware can be downloaded
 from the internet
 
-FIXME: Check at which kernel version the PATCHRAM support was mainlined
-
 [git8f0c304]: http://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/?id=8f0c304c693c5a9759ed6ae50d07d4590dad5ae7
 [gita86c02ea]: http://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/?id=a86c02ea38c53b695209b1181f9e2e18d73eb4e8
 [gitPATCHRAM]: http://git.kernel.org/cgit/linux/kernel/git/stable/linux-stable.git/commit/?id=10d4c6736ea6e6ff293dd588551270bca00ca45d
