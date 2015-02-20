@@ -32,3 +32,5 @@ kramdown:
   input: GFM
   # but without hard-breaks
   hard_wrap: false
+  # disable "smart" quoting
+  smart_quotes: ["apos", "apos", "quot", "quot"]
