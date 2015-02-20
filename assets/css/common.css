@@ -7,3 +7,8 @@ pre {
 	/* prevent code blocks from running over */
 	overflow: auto;
 }
+
+p {
+	-moz-hyphens: auto;
+	hyphens: auto;
+}

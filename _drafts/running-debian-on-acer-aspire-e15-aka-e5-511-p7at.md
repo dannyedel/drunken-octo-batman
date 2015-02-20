@@ -1,5 +1,6 @@
 ---
 title: "Running Debian Jessie on an Acer Aspire E15 (aka E5-511-P7AT)"
+lang: en
 ---
 
 The good news first: The Laptop *can* work with debian jessie, but not (yet)
