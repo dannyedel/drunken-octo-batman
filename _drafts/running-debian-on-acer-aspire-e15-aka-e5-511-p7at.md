@@ -104,8 +104,8 @@ as [debian bug 773713][deb773713], there are proposed patches in the BTS.
 ### Known workaround:
 
 To get the source of broadcom-sta and apply the patches from the BTS,
-run the following commands in a fresh, empty directory (You can use
-"view raw" on the bottom right to save this as a shellscipt).
+run the following commands in a fresh, empty directory
+([get as shellscript][patchscript]).
 
 {% gist 800a2420df423b0ba4d7 %}
 
@@ -121,7 +121,7 @@ Wait for [bug 773713][deb773713].
 [UsingQuilt]: https://wiki.debian.org/UsingQuilt
 [broadcom-sta-dkms]: https://packages.debian.org/jessie/broadcom-sta-dkms
 [deb773713]: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=773713
-
+[patchscript]: /assets/downloads/patch-broadcom-sta-linux-3.18-and-build.sh
 ---
 
 ## Hibernation
