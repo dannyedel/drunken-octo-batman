@@ -1,0 +1,33 @@
+img {
+	/* prevent images from running over the edge */
+	max-width: 100%;
+}
+
+pre {
+	/* prevent code blocks from running over */
+	overflow: auto;
+}
+
+p {
+	-moz-hyphens: auto;
+	hyphens: auto;
+}
+
+article {
+	/* Maxwidth for article, for easier reading */
+	max-width: 33em;
+	padding-left: 1em;
+	padding-right: 1em;
+	margin-left: auto;
+	margin-right: auto;
+
+	text-align: justify;
+}
+
+code {
+	/* May justify very bad kerning */
+	white-space: nowrap;
+}
+
+nav {
+}
