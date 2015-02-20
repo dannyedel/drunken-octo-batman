@@ -247,15 +247,33 @@ After patching, rebuild `btusb.ko` (make modules) and insmod it.
 Your syslog should tell you that it tried to load the modules.
 
 ### Obtaining the binary firmware from the windows drivers
-On my laptop, there was a windows driver DVD included, so I started to check
-for files that might be appropriate for this device.
+
+tl,dr:
+
+1. [hex2hcd] `$(find /mnt/cdrom -iname bcm43142a0_001.001.011.0197.0211.hex)
+BCM43142A0-04ca-2009.hcd`
+
+1. (as root) `mv *.hcd /lib/firmware/brcm/`
+
+### Why I think this is the right file
+
+Even though this laptop came without an operating system,
+there was a windows driver DVD included, so I started to check
+for files that might be appropriate for this device. You
+might be able to scan a windows driver download in the same way.
+
+Looking through the folder names,
+`autorun/drv/hai wireless+bt 3rd wifi 1x1bgn+bt4.0 bcm43142/`
+sounded the most promising.
 
 I ran the command
 `grep -HinR '04ca.*2009' autorun/drv/hai\ wireless+bt\ 3rd\ wifi\ 1x1bgn+bt4.0\ bcm43142/`
-from the DVD's root dir to scan for `inf` files about the driver.
+from the DVD's root dir to scan for anything related to the USB-ID.
+`grep` found some `inf` files (windows driver information), that seem
+to tell the system which file names to install (`CopyList`)
 
 The lines it found pointed me towards the `BlueRAMUSB2009` section
-in the file `/bcbtums-win8x64-brcm.inf`.
+in the file `bcbtums-win8x64-brcm.inf`.
 
 That section pointed me towards a file named
 `BCM43142A0_001.001.011.0197.0211.hex` --
