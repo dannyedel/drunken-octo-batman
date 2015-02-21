@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Drunken
+lang: en
 ---
 This is a page for experiments and making backups of the brain. It is not
 intended for the public.
