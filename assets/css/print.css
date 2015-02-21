@@ -2,6 +2,15 @@ nav {
 	display: none;
 }
 
+/* Allow line-wrapping in (originally scrolling) code
+ */
 pre code {
+	white-space: pre-wrap !important;
+}
+
+/* FIXME: This breaks line numbers, but at least the
+ * whole code is on the printout
+ */
+.gist pre, .gist code {
 	white-space: pre-wrap !important;
 }
