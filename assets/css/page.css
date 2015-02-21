@@ -1,8 +1,8 @@
 @import url('textstyles.css');
 
+@import url('common-layout.css');
 @import url('print.css') print;
 
-@import url('common-layout.css');
 @import url('onecolumn.css') screen and (max-width: 40em);
 @import url('twocolumn.css') screen and (min-width: 40em);
 

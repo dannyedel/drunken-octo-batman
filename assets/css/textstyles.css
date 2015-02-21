@@ -1,3 +1,32 @@
 /* Text style definitions (font-face etc) here, to
  * ensure similar output across all renderings
  */
+
+article p {
+	text-align: justify;
+}
+
+/* Allow line-wrapping in "inline" code-tags, but not in
+ * <pre><code> tags
+ */
+code {
+	white-space: pre-wrap;
+}
+pre code {
+	white-space: pre;
+}
+
+nav {
+}
+
+ul {
+	padding-left: 1.2em;
+}
+
+/* Automatic hyphenation if browser
+ * supports it
+ */
+p {
+	-moz-hyphens: auto;
+	hyphens: auto;
+}
