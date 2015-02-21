@@ -1,17 +1,3 @@
-body {
-	background-color: red;
-	margin-left: auto;
-	margin-right: auto;
-}
 
-nav,article {
-	border: 1px solid black;
-}
-
-nav {
-	background-color: #faf;
-}
-
-article {
-	background-color: #aff;
-}
+/** FIXME: Move <nav> left of <article>
+ */
