@@ -8,11 +8,6 @@ pre {
 	overflow: auto;
 }
 
-p {
-	-moz-hyphens: auto;
-	hyphens: auto;
-}
-
 article, nav {
 	/* Maxwidth for article and nav */
 	max-width: 33em;
