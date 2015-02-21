@@ -112,7 +112,10 @@ run the following commands in a fresh, empty directory
 
 {% gist 800a2420df423b0ba4d7 %}
 
-Now you can (as root) `dpkg -i broadcom-sta-dkms_6.30.223.248-3.1_all.deb`
+Now you can install it (as root):
+``
+dpkg -i broadcom-sta-dkms_6.30.223.248-3.1_all.deb
+``
 
 Note: The quilt usage is essentially copy-and-pasted from [UsingQuilt]
 in the debian wiki.
@@ -232,7 +235,9 @@ it to the filename and format where it is expected.
   Check `dmesg | grep -i blue.*firm` to see the filename it tried to send.
 
   Example:
-  `bluetooth hci0: Direct firmware load for brcm/BCM43142A0-04ca-2009.hcd failed with error -2`
+  ``
+  bluetooth hci0: Direct firmware load for brcm/BCM43142A0-04ca-2009.hcd failed with error -2
+  ``
 
 ### Telling the (patchram-aware) kernel about your device
 
